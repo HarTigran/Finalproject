@@ -1,0 +1,7 @@
+requests
+streamlit
+Pillow
+more-itertools
+boto3
+numpy
+requests-toolbelt

@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  fastapi:
+    # build: similarity_check/
+    ports: 
+      - 8080:8080
+    networks:
+      - deploy_network
+    image: similarity-check
+
+  streamlit:
+    # build: streamlit/
+    #depends_on:
+     # - similarity_check
+    ports: 
+        - 8501:8501
+    networks:
+      - deploy_network
+    image: streamlit
+
+networks:
+  deploy_network:
+    driver: bridge

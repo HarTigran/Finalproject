@@ -1,0 +1,13 @@
+torch
+pytorch_lightning
+torchvision
+boto3
+numpy
+Pillow
+awswrangler
+pickle-mixin
+uvicorn
+fastapi
+starlette
+sklearn
+python-multipart
