@@ -9,18 +9,6 @@ from requests_toolbelt.multipart.encoder import MultipartEncoder
 # Interact with FastAPI endpoint
 url = 'http://fastapi:8080'
 endpoint = '/predict'
-
-def process(image, server_url: str):
-    m = MultipartEncoder(
-        fields = {'file': ('filename', image, 'image/jpeg')}
-        )
-        
-    r = requests.post(server_url,
-                    data = m,
-                    headers = {'Content-Type': m.content_type},
-                    timeout = 8080)
-    
-    return r
     
 # construct UI layout
 
@@ -43,7 +31,6 @@ st.header("This is our APP!")
 
 # upload image
 image_file = st.file_uploader("Upload Images", type=["png","jpg","jpeg"])
-
 # connect to s3
 s3 = boto3.resource('s3')
 bucket = s3.Bucket('images-from-web')
@@ -52,19 +39,19 @@ if st.button('Get Similar Cars'):
     if image_file is None:
         st.write('Insert an Image')
     else:
-        predict = process(image_file, url + endpoint)
-        st.write(predict)
-        # img_lst = list(predict.keys())
-        # for image in img_lst:
-        #     object = bucket.Object(image.split('/')[-1])
-        #     response = object.get()
-        #     file_stream = response['Body']
-        #     im = Image.open(file_stream)
-        #     filteredImages = [im] # your images here
-        #     caption = ["2332"] # your caption here
-        #     cols = cycle(st.columns(1)) # st.columns here since it is out of beta at the time I'm writing this
-        #     for idx, filteredImage in enumerate(filteredImages):
-        #         next(cols).image(filteredImage, width=150, caption=caption[idx])
+        files = {"file": image_file.getvalue()}
+        img_lst = requests.post('http://fastapi:8080/predict', files=files)
+        
+        for image in img_lst["item"]:
+            object = bucket.Object(image.split('/')[-1])
+            response = object.get()
+            file_stream = response['Body']
+            im = Image.open(file_stream)
+            filteredImages = [im] # your images here
+            caption = ["2332"] # your caption here
+            cols = cycle(st.columns(1)) # st.columns here since it is out of beta at the time I'm writing this
+            for idx, filteredImage in enumerate(filteredImages):
+                next(cols).image(filteredImage, width=150, caption=caption[idx])
         
         
         

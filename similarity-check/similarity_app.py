@@ -42,15 +42,15 @@ async def root():
 
 
 @app.post('/predict')
-async def prediction(img: UploadFile = File(...)):
-    raw_file = img.file.read()
+async def prediction(file: UploadFile = File(...)):
+    raw_file = file.file.read()
     raw_file = Image.open(io.BytesIO(raw_file))
     transformed_img = transform_to_vec(raw_file)
     distance, index = similarity_model.kneighbors(transformed_img.reshape(1, -1))
     result = []
     for i in range(distance[0].shape[0]):
         result.append(names[index[0][i]])
-    return json.dumps({"item": result})
+    return {'result': result}
 
 
 if __name__ == '__main__':
