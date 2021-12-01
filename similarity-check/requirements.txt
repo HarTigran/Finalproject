@@ -11,3 +11,4 @@ fastapi
 starlette
 sklearn
 python-multipart
+csv

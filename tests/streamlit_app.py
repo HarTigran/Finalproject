@@ -46,29 +46,29 @@ st.header("This is our APP!")
 image_file = st.file_uploader("Upload Images", type=["png","jpg","jpeg"])
 
 # connect to s3
+s3 = boto3.resource('s3')
+bucket = s3.Bucket('images-from-web')
 
 if st.button('Get Similar Cars'):
     if image_file is None:
         st.write('Insert an Image')
     else:
         files = {"file": image_file.getvalue()}
-        res = requests.post("http://0.0.0.0:8080/predict", files=files)
-        img_path = res.json()
-        st.write(img_path)
-        st.write(type(image_file.getvalue()))
-        # predicts = process(image_file, url+endpoint)
-        # st.write(predicts)
-        # img_lst = list(predict.keys())
-        # for image in img_lst:
-        #     object = bucket.Object(image.split('/')[-1])
-        #     response = object.get()
-        #     file_stream = response['Body']
-        #     im = Image.open(file_stream)
-        #     filteredImages = [im] # your images here
-        #     caption = ["2332"] # your caption here
-        #     cols = cycle(st.columns(1)) # st.columns here since it is out of beta at the time I'm writing this
-        #     for idx, filteredImage in enumerate(filteredImages):
-        #         next(cols).image(filteredImage, width=150, caption=caption[idx])
+        img_lst = requests.post("http://0.0.0.0:8080/predict", files=files)
+        img_url = img_lst.json()
+        st.write(img_url)
+       
+        for image in img_url["item"]:
+            st.write(image)
+            object = bucket.Object(image.split('/')[-1])
+            response = object.get()
+            file_stream = response['Body']
+            im = Image.open(file_stream)
+            filteredImages = [im] # your images here
+            caption = ["2332"] # your caption here
+            cols = cycle(st.columns(1)) # st.columns here since it is out of beta at the time I'm writing this
+            for idx, filteredImage in enumerate(filteredImages):
+                next(cols).image(filteredImage, width=150, caption=caption[idx])
         
         
         

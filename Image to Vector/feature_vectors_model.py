@@ -67,16 +67,16 @@ if __name__ == '__main__':
 
     s3 = boto3.resource('s3')#,aws_access_key_id=ACCESS_ID, aws_secret_access_key= ACCESS_KEY)
     bucket = s3.Bucket('images-from-web')
-    object = bucket.Object('img-lst.jpeg')
-    response = object.get()
-    file_stream = response['Body']
-    img = Image.open(file_stream).convert('RGB')
-    img = trsf.to_tensor(img)
-    img = transform(img)
-    p1 = f_model(img.unsqueeze(0))
-    assert p1.shape == torch.Size([1, 512, 1, 1])
+    # object = bucket.Object('img-lst.jpeg')
+    # response = object.get()
+    # file_stream = response['Body']
+    # img = Image.open(file_stream).convert('RGB')
+    # img = trsf.to_tensor(img)
+    # img = transform(img)
+    # p1 = f_model(img.unsqueeze(0))
+    # assert p1.shape == torch.Size([1, 512, 1, 1])
     
-    all_images = wr.s3.list_objects('s3://images-from-web/*.jpeg')
+    all_images = wr.s3.list_objects('s3://images-from-web/*.jpg')
     images_list = []
     images_name = []
     for image in all_images:
