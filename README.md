@@ -2,4 +2,4 @@
 
 # Finalproject
 
-![Diagram](https://github.com/HarTigran/Finalproject/blob/main/car-project-master/Images/Diagram.jpg)
+![Diagram](https://github.com/HarTigran/Finalproject/blob/main/car-project-master/Images/Car-project-Draw.png?raw=true)
