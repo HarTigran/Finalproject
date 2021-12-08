@@ -33,8 +33,11 @@ _Main Process_
 
 ### Model
 
-The main stage of similarity checking is performed by comparing the distance of the vector of the loaded car image with the vectors of the car images obtained from Craigslist.
-Vector transformation logic is built by cutting last layer machine learning process.
+![Model diagram](https://raw.githubusercontent.com/brauden/car-project/master/Images/Models.svg)
+
+1. Fine-tuning ResNet18 model using PyTorch Lightning using [Standford dataset](https://www.kaggle.com/jessicali9530/stanford-cars-dataset) from Kaggle
+2. Extracting features from the images
+3. Training Nearest neighbors model to find similarities between vectors
 
 ## Architecture
 
